@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>_metadata</key>
+	<dict>
+		<key>created_by</key>
+		<string>ascs</string>
+		<key>creation_date</key>
+		<date>2017-06-06T15:47:57Z</date>
+		<key>munki_version</key>
+		<string>2.8.2.2855</string>
+		<key>os_version</key>
+		<string>10.12.3</string>
+	</dict>
+	<key>autoremove</key>
+	<false/>
+	<key>catalogs</key>
+	<array>
+		<string>testing</string>
+		<string>production</string>
+	</array>
+	<key>category</key>
+	<string>Graphics</string>
+	<key>description</key>
+	<string>SketchBook is made for anyone who loves to draw and is an essential tool for digital artists of all skill levels. </string>
+	<key>developer</key>
+	<string>AutoDesk</string>
+	<key>display_name</key>
+	<string>Autodesk Sketchbook</string>
+	<key>icon_name</key>
+	<string>SketchBook2018_12.png</string>
+	<key>installed_size</key>
+	<integer>57528</integer>
+	<key>installer_item_hash</key>
+	<string>5f2492e4aa0832e5b31d510e4316000335963ba901ec80b5f2cda09b39581965</string>
+	<key>installer_item_location</key>
+	<string>Graphics/AutoDesk/SketchBook2018/Autodesk_SketchBook_for_Enterprise_2018_Multilingual_MAC_OSX-2018-1.0.dmg</string>
+	<key>installer_item_size</key>
+	<integer>237376</integer>
+	<key>installer_type</key>
+	<string>copy_from_dmg</string>
+	<key>items_to_copy</key>
+	<array>
+		<dict>
+			<key>destination_path</key>
+			<string>/tmp/Autodesk</string>
+			<key>source_item</key>
+			<string>Autodesk_SketchBook_for_Enterprise_2018_Multilingual_MAC_OSX.pkg</string>
+		</dict>
+	</array>
+	<key>minimum_os_version</key>
+	<string>10.5.0</string>
+	<key>name</key>
+	<string>Autodesk_2018_SketchBook</string>
+	<key>notes</key>
+	<string>Has a post install script that installs the pkg and activates the software with autodesk</string>
+	<key>postinstall_script</key>
+	<string>#!/bin/sh
+
+
+# You need to expand the Sketchbook pkg that was copied into /tmp/Autodesk in order to access the adml executable to licences sketchbook
+
+/usr/sbin/pkgutil --expand /tmp/Autodesk/Autodesk_SketchBook_for_Enterprise_2018_Multilingual_MAC_OSX.pkg /tmp/sketchbook2018
+
+# Run the Sketchbook installer pkg
+
+/usr/sbin/installer -dumplog -verbose -pkg /tmp/Autodesk/Autodesk_SketchBook_for_Enterprise_2018_Multilingual_MAC_OSX.pkg -target /
+
+# Run admlreg to register sketchbook
+# *note that your using the adlm tool contained in the expanded package folder NOT a version of the tool you may have installed elsewhere.
+
+/tmp/sketchbook2018/sketchbookpro2018.pkg/Scripts/adlmreg -i S 871J1 871J1 2018.0.0.F *YourSerialNumber* /Library/Application\ Support/Autodesk/Adlm/PIT/SketchBookforEnterpriseConfig.pit
+
+
+# Make sure the dir name after /LGS contains your product key YourProductKey_2018.0.0.F
+
+
+/bin/mkdir /Library/Application\ Support/Autodesk/CLM/LGS/871J1_2018.0.0.F/
+/usr/bin/touch /Library/Application\ Support/Autodesk/CLM/LGS/871J1_2018.0.0.F/LGS.data
+/bin/chmod 777 /Library/Application\ Support/Autodesk/CLM/LGS/871J1_2018.0.0.F/LGS.data
+/bin/echo "_STANDALONE"&gt;&gt;/Library/Application\ Support/Autodesk/CLM/LGS/871J1_2018.0.0.F/LGS.data
+
+# Remove the Maya instller app
+/bin/rm -rf /tmp/sketchbook2018
+/bin/rm -rf /tmp/Autodesk</string>
+	<key>receipts</key>
+	<array>
+		<dict>
+			<key>installed_size</key>
+			<integer>57528</integer>
+			<key>packageid</key>
+			<string>com.autodesk.SketchBookProWithNetworkLicense.SketchBookProWithNetworkLicense2018.pkg</string>
+			<key>version</key>
+			<string>1.0</string>
+		</dict>
+	</array>
+	<key>unattended_install</key>
+	<false/>
+	<key>unattended_uninstall</key>
+	<false/>
+	<key>uninstall_method</key>
+	<string>uninstall_script</string>
+	<key>uninstall_script</key>
+	<string>#!/bin/sh
+
+# Remove the App and the licensing folder
+/bin/rm -rf "/Applications/Autodesk/Sketchbook for Enterprise"
+/bin/rm -rf "/Library/Application Support/Autodesk/CLM/LGS/871J1_2018.0.0.F"
+
+# Remove Sketchbook Prefs
+/bin/rm -R /Library/Preferences/com.autodesk.SketchBookPro2018.adlminfo.txt
+
+# Remove the Sketchbook receipt
+/usr/sbin/pkgutil --forget com.autodesk.SketchBookProWithNetworkLicense.SketchBookProWithNetworkLicense2018.pkg
+/usr/sbin/pkgutil --forget com.autodesk.pkg.SketchBookPro_AdLMconf2018.0</string>
+	<key>uninstallable</key>
+	<true/>
+	<key>version</key>
+	<string>1.0</string>
+</dict>
+</plist>
