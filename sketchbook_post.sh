@@ -15,7 +15,7 @@
 /tmp/sketchbook2018/sketchbookpro2018.pkg/Scripts/adlmreg -i S 871J1 871J1 2018.0.0.F *YourSerialNumber* /Library/Application\ Support/Autodesk/Adlm/PIT/SketchBookforEnterpriseConfig.pit
 
 
-# Make sure the dir name after /LGS contains your product key YourProductKey_2018.0.0.F
+# Make sure the dir name after /LGS contains your product key YourProductKey_2018.0.0.F it can change
 
 
 /bin/mkdir /Library/Application\ Support/Autodesk/CLM/LGS/871J1_2018.0.0.F/
